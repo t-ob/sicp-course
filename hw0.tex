@@ -1,0 +1,82 @@
+% Created 2013-11-27 Wed 21:55
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{marvosym}
+\usepackage{wasysym}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\tolerance=1000
+\author{Tom O'Brien}
+\date{\today}
+\title{Homework 0}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.2.93.1 (Org mode 8.2.1)}}
+\begin{document}
+
+\maketitle
+\section{Obtain a copy of SICP}
+\label{sec-1}
+SICP is available both in \href{http://www.amazon.co.uk/Structure-Interpretation-Computer-Electrical-Engineering/dp/0262510871/ref%3Dsr_1_1?ie%3DUTF8&qid%3D1385586049&sr%3D8-1&keywords%3Dstructure%2Band%2Binterpretation%2Bof%2Bcomputer%2Bprograms}{physical} and \href{https://mitpress.mit.edu/sicp/full-text/book/book.html}{electronic} forms.  The latter
+is freely available and is licensed under a Creative Commons
+NonCommercial License.
+
+Download (or order!) a copy of the text, and read \href{https://mitpress.mit.edu/sicp/full-text/book/book-Z-H-9.html#%25_chap_1}{the introduction to Section 1}.
+
+\section{Set up your development environment}
+\label{sec-2}
+Lisp has many dialects, e.g. Common Lisp, Clojure (Lisp on the JVM), GOOL
+(developed at Naughty Dog and \href{http://all-things-andy-gavin.com/2011/03/12/making-crash-bandicoot-gool-part-9/}{used in the development of the Crash Bandicoot series of games})
+and Scheme, the dialect used in this course.  Scheme itself comes in many different flavours,
+and each flavour has its own quirks and installation process.
+
+The suggested flavour of Scheme used in this course is \href{https://www.gnu.org/software/mit-scheme/}{MIT/GNU Scheme}, though \href{http://racket-lang.org/}{Racket} is also
+a popular choice.  Both have their own associated development environments,
+and this part of the homework is to get you set-up with one of them.  Alternatively,
+both Emacs and Vim support integration with a running MIT/GNU Scheme or Racket process.
+\subsection{MIT/GNU Scheme}
+\label{sec-2-1}
+\begin{itemize}
+\item \href{https://www.gnu.org/software/mit-scheme/}{Download} MIT/GNU Scheme for your development platform.
+\item Install and open the MIT/GNU Scheme implementation either from
+the installed Application or by running
+\begin{verbatim}
+mit-scheme --edit
+\end{verbatim}
+at the command line.
+\item You are now in Edwin, the MIT/GNU Scheme editor. It is very
+similar to Emacs, though written in Scheme.  If this is the first
+time in an Emacs-like environment, enter and complete the
+interactive tutorial by executing the key-chord \texttt{Ctrl-h t} (Emacs
+and Edwin abbreviate this to \texttt{C-h t}.
+\end{itemize}
+
+\subsection{Racket}
+\label{sec-2-2}
+\begin{itemize}
+\item \href{http://racket-lang.org/download/}{Download} Racket for your development platform.
+\item Open the installed DrRacket application for a Racket development
+environment.
+\item \textbf{Important}: Racket departs from Scheme in certain ways that make
+some of the exercises in SICP impossible.  This can be remedied
+by adding
+\begin{verbatim}
+#lang planet neil/sicp
+\end{verbatim}
+to the top of any Scheme file you're editing (cf. \href{http://www.neilvandyke.org/racket-sicp/}{Neil Van Dyke}'s
+page for more details).  The first time you run a program with
+this header, DrRacket will download the required packages.
+\end{itemize}
+% Emacs 24.2.93.1 (Org mode 8.2.1)
+\end{document}
