@@ -1,0 +1,7 @@
+#+TITLE: SICP Course
+
+* Course Materials
+  + Course notes [[[file:notes.html][html]], [[file:notes.pdf][pdf]]] (updated <2013-11-27 Wed>)
+
+* Homework
+  + Homework 0 [[[file:hw0.html][html]], [[file:hw0.pdf][pdf]]] (due <2013-12-02 Mon>)
