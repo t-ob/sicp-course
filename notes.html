@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <title>SICP Course Notes</title>
-<!-- 2013-11-28 Thu 12:53 -->
+<!-- 2013-12-04 Wed 21:50 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="generator" content="Org-mode" />
 <meta  name="author" content="Tom O'Brien" />
@@ -132,6 +132,48 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/javascript" src="http://orgmode.org/mathjax/MathJax.js"></script>
+<script type="text/javascript">
+<!--/*--><![CDATA[/*><!--*/
+    MathJax.Hub.Config({
+        // Only one of the two following lines, depending on user settings
+        // First allows browser-native MathML display, second forces HTML/CSS
+        //  config: ["MMLorHTML.js"], jax: ["input/TeX"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+        extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js",
+                     "TeX/noUndefined.js"],
+        tex2jax: {
+            inlineMath: [ ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"], ["\\begin{displaymath}","\\end{displaymath}"] ],
+            skipTags: ["script","noscript","style","textarea","pre","code"],
+            ignoreClass: "tex2jax_ignore",
+            processEscapes: false,
+            processEnvironments: true,
+            preview: "TeX"
+        },
+        showProcessingMessages: true,
+        displayAlign: "center",
+        displayIndent: "2em",
+
+        "HTML-CSS": {
+             scale: 100,
+             availableFonts: ["STIX","TeX"],
+             preferredFont: "TeX",
+             webFont: "TeX",
+             imageFont: "TeX",
+             showMathMenu: true,
+        },
+        MMLorHTML: {
+             prefer: {
+                 MSIE:    "MML",
+                 Firefox: "MML",
+                 Opera:   "HTML",
+                 other:   "HTML"
+             }
+        }
+    });
+/*]]>*///-->
+</script>
 </head>
 <body>
 <div id="content">
@@ -140,7 +182,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#sec-1">Introduction</a></li>
+<li><a href="#sec-1">1. Introduction</a></li>
+<li><a href="#sec-2">2. Lecture 1 - The Elements of Programming</a>
+<ul>
+<li><a href="#sec-2-1">2.1. Basic syntax</a></li>
+<li><a href="#sec-2-2">2.2. A model for evaluation</a></li>
+<li><a href="#sec-2-3">2.3. Case analysis</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -161,13 +210,311 @@ Lisp is worth learning for the profound enlightenment experience you will have w
 The Structure and Interpretation of Computer Programs is regarded as
 one of the classic textbooks of Computer Science.
 </p>
+
+<p>
+In this pilot course we shall cover material from Chapter 1, as well
+as learn the basics of the Scheme programming language. Scheme is a
+dialect of Lisp with few special forms and a simple syntax. In this
+year 2013 object-oriented programming is (for better or for worse)
+ubiquitous, though the rise of languages such as Clojure, Scala and
+Erlang indicate the philosophies of functional programming, having
+been long-forgotten to all but the most wizened of greybeards, are
+once again coming back into fashion.
+</p>
+
+<p>
+So why Scheme? (It's arguable that) we have come a long way since
+1986 when the Wizard Book was last published, so why not adapt the
+material to a programming language more of our time? There are 3
+reasons:
+</p>
+<ol class="org-ol">
+<li>Scheme is in fact timeless.
+</li>
+<li>Sooner or later you will encounter an exercise requiring a
+feature of Scheme a replacement langauge may lack. For example,
+Clojure lacks tail-call optimisation, Scala is awful and no
+one actually understands Erlang.
+</li>
+<li>SICP was written with Scheme in mind, and I believe it would be
+irreverent to the point of insult to pre-suppose a more suitable
+language.
+</li>
+</ol>
+
+<p>
+These notes are broken-down into an introduction, three chapters on
+the material, as well as an appendix describing the mathematical
+background required for some exercises.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Lecture 1 - The Elements of Programming</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Basic syntax</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Given any new programming language, we must always ask these three
+questions of it:
+</p>
+<ol class="org-ol">
+<li>What are its primitive elements?
+</li>
+<li>What are its means of combining these atomic units into compound data?
+</li>
+<li>What is its means of abstraction - how do we name our compound
+data, to be treated as if they themselves are primitive data?
+</li>
+</ol>
+
+<p>
+The aim of this section is to introduce the Scheme programming
+language and make a first attempt at answering these questions.
+</p>
+
+<p>
+Scheme is a dialect of Lisp.  Its primitive data types are numbers,
+booleans, characters and symbols, though we restrict ourselves for
+the moment to numbers (and the occasional boolean).  To add two
+numbers - a combination of two primitive data types - in Scheme, we
+write:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(+ 1 1)
+</pre>
+</div>
+<p>
+Scheme programs are built out of <b>symbolic-expressions</b> of the form
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #b58900;">&lt;operator&gt;</span> <span style="color: #b58900;">&lt;operand-1&gt;</span> <span style="color: #b58900;">&lt;operand-2&gt;</span> ... <span style="color: #b58900;">&lt;operand-n&gt;</span>)
+</pre>
+</div>
+<p>
+Operands may themselves be combinations, giving us expressions such
+as
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(* (+ 2 (* 4 6))
+   (+ 3 5 7))
+</pre>
+</div>
+<p>
+There are two things we can note about the Scheme syntax:
+</p>
+<ol class="org-ol">
+<li>An expression always begins with an operation, followed by some
+number of operands.  While potentially confusing at first, this
+prefix notation is useful as it allows for potentially
+arbitrarily many operands to be given to a function; in a C-style
+language, what we might write as
+<div class="org-src-container">
+
+<pre class="src src-c">1 + 2 + 3 + 4
+</pre>
+</div>
+<p>
+we can write in Scheme as
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(+ 1 2 3 4)
+</pre>
+</div>
+</li>
+<li>There are a lot of parentheses.  This is perhaps the largest
+psychological hurdle one must overcome when first meeting Lisp
+syntax.  They have the benefit of total disambiguation in terms
+of what is calculated when; there is no such thing as a table of
+operator precedence in Lisp.  Many editors with modes for dealing
+with Lisp will aid in navigating and balancing parentheses.  To
+witness an Emacs master glide over and rebalance her parentheses
+with total mastery is an awesome sight.
+</li>
+</ol>
+
+<p>
+We assign names to data with <code>define</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">pi</span> 3.14)
+
+(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">radius</span> 5)
+
+(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">area-of-circle-of-radius-five</span>
+  (* pi radius radius))
+</pre>
+</div>
+
+<p>
+So, we can name individual pieces of data, but that is of little use
+unless we can name processes for dealing with data:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> (<span style="color: #268bd2;">square</span> x)
+  (* x x))
+
+(square 4) <span style="color: #93a1a1;">; </span><span style="color: #93a1a1;">16</span>
+
+(square 10) <span style="color: #93a1a1;">; </span><span style="color: #93a1a1;">100</span>
+</pre>
+</div>
+<p>
+We can define functions another way, using the <code>lambda</code> construction:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">square</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+    (* x x)))
+</pre>
+</div>
+<p>
+The expression <code>(lambda (x) (* x x))</code> means:
+</p>
+<blockquote>
+<p>
+The function of one argument \(x\) which returns \(x\) multiplied by itself. That is, the function \(x \mapsto x^2 \).
+</p>
+</blockquote>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> A model for evaluation</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Almost all Scheme functions will obey the following rule for
+evaluation.  To evaluate a Scheme expression:
+</p>
+<ol class="org-ol">
+<li>Evaluate each subexpression.
+</li>
+<li>Apply the procedure that is the value of the leftmost
+subexpression to the evaluated subexpressions.
+</li>
+</ol>
+<p>
+This rule is recursively defined, with the understanding that
+primitive elements like numbers and built-in functions evaluate to
+themselves.
+</p>
+
+<p>
+Any function which does not follow this model for evaluation is
+called a special form.  Each special form has its own model for
+evaluation, but there are only a handful to remember.
+</p>
+
+<p>
+Examples of special forms already encountered are <code>define</code> and
+<code>lambda</code> (why?).
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Case analysis</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Any half-decent programming language must be able to ask questions
+of data, and be able to branch accordingly.  In Scheme, we ask
+questions with <code>cond</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">abs</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+    (<span style="color: #859900; font-weight: bold;">cond</span>
+     ((&lt; x 0) (- x))
+     ((= x 0) 0)
+     ((&gt; x 0) x))))
+</pre>
+</div>
+<p>
+Another special form, <code>cond</code> takes an arbitrary number of
+conditional clauses of the form:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #b58900;">&lt;predicate&gt;</span> <span style="color: #b58900;">&lt;consequent-expression&gt;</span>)
+</pre>
+</div>
+<p>
+evaluating each in-turn.  When <code>cond</code> encounters the first
+predicate that returns <code>#t</code> (true), its corresponding consequent
+expression is evaluated and returned.  If no provided predicates
+return true, <code>cond</code> does not return a value.  A default case can be
+provided with <code>else</code>:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">abs</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+    (<span style="color: #859900; font-weight: bold;">cond</span>
+     ((&lt; x 0) (- x))
+     ((= x 0) 0)
+     (<span style="color: #859900; font-weight: bold;">else</span> x))))
+</pre>
+</div>
+<p>
+The second conditional clause in the above example is superfluous,
+so we could instead write:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">abs</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+    (<span style="color: #859900; font-weight: bold;">cond</span>
+     ((&lt; x 0) (- x))
+     (<span style="color: #859900; font-weight: bold;">else</span> x))))
+</pre>
+</div>
+<p>
+In this case, we are in a traditional <b>if-else</b> scenario, so we can
+use Scheme's built-in <code>if</code> special form:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">abs</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+    (<span style="color: #859900; font-weight: bold;">if</span> (&lt; x 0)
+        (- x)
+        x)))
+</pre>
+</div>
+<p>
+The form <code>if</code> takes precisely three arguments: a predicate, an
+if-clause to be evaluated if the predicate evaluates to <code>#t</code>, and
+an else clause to be evaluated otherwise. Note that the contional
+clauses that comprise <code>cond</code> and <code>if</code> are not evaluated until
+necessary, so we are free to write functions like:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-scheme">(<span style="color: #859900; font-weight: bold;">define</span> <span style="color: #268bd2;">naughty-function</span>
+  (<span style="color: #859900; font-weight: bold;">lambda</span> (x)
+    (<span style="color: #859900; font-weight: bold;">if</span> (&lt; x 0)
+        (- x)
+        (/ 1 0))))
+
+(naughty-function -1) <span style="color: #93a1a1;">; </span><span style="color: #93a1a1;">1</span>
+(naughty-function 1) <span style="color: #93a1a1;">; </span><span style="color: #93a1a1;">Division by zero signalled by /</span>
+</pre>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Tom O'Brien</p>
-<p class="date">Created: 2013-11-28 Thu 12:53</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.3.50.1 (<a href="http://orgmode.org">Org</a> mode 8.2.3a)</p>
+<p class="date">Created: 2013-12-04 Wed 21:50</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.2.93.1 (<a href="http://orgmode.org">Org</a> mode 8.2.1)</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
